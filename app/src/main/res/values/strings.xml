@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Duo Approve</string>
+    <string name="action_settings">Settings</string>
+    <string name="battery_optimization_info">Push notifications can wake up apps  such as Duo Mobile, but their notification listeners are not woken up. For this app to work reliably it needs to be whitelisted in the battery optimization settings.</string>
+    <string name="notification_listener_info">This app works by listening to notifications. Notification listener settings needs to be enabled for this app to work. To disable the app simply disable the notification listener setting.</string>
+</resources>
