@@ -26,37 +26,24 @@ public class DuoNotificationListener extends NotificationListenerService {
 
     @Override
     public IBinder onBind(Intent intent) {
-        IBinder iBinder = super.onBind(intent);
-        Log.d(TAG, "onBind");
-        return iBinder;
+        return super.onBind(intent);
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        boolean mOnUnbind = super.onUnbind(intent);
-        Log.i(TAG, "onUnbind");
-        try {
-        } catch (Exception e) {
-            Log.e(TAG, "Error during unbind", e);
-        }
-        return mOnUnbind;
+        return super.onUnbind(intent);
     }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
         if(DUO_MOBILE_PACKAGE.equals(sbn.getPackageName())) {
-            Log.d(TAG, "actions list:");
-            for(Notification.Action action:sbn.getNotification().actions) {
-                Log.d(TAG, "action title: " + action.title);
+            if(sbn.getNotification().actions.length > 0) {
                 try {
-                    if("Tap To View Actions".contentEquals(action.title) || "Approve".contentEquals(action.title)) {
-                        Log.d(TAG, "action intent - " + action.actionIntent.toString());
-                        Log.d(TAG, "sending action intent for - " + action.title);
-                        action.actionIntent.send();
-                    }
+                    sbn.getNotification().actions[0].actionIntent.send();
+                    Log.d(TAG, "sent action intent for - " + sbn.getNotification().actions[0].title);
                 } catch (PendingIntent.CanceledException e) {
-                    Log.d(TAG, "pending intent cancelled exception: " + e.getMessage());
+                    Log.e(TAG, e.getMessage());
                 }
             }
             saveNotificationTimestamp();
@@ -64,7 +51,7 @@ public class DuoNotificationListener extends NotificationListenerService {
     }
 
     private void saveNotificationTimestamp() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aa");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss AA");
         String format = simpleDateFormat.format(new Date());
         SharedPreferences sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("TIMESTAMP", format).apply();
@@ -98,6 +85,6 @@ public class DuoNotificationListener extends NotificationListenerService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 }
