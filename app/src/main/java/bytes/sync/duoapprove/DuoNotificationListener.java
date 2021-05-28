@@ -51,7 +51,7 @@ public class DuoNotificationListener extends NotificationListenerService {
     }
 
     private void saveNotificationTimestamp() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss AA");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aa");
         String format = simpleDateFormat.format(new Date());
         SharedPreferences sharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         sharedPreferences.edit().putString("TIMESTAMP", format).apply();
